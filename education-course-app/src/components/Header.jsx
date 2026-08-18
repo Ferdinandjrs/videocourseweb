@@ -32,7 +32,7 @@ const Header = ({ setView, onSearch }) => {
           <span 
             className="navbar-brand fw-bold fs-4 m-0" 
             style={{ cursor: 'pointer', color: '#ff6600' }} 
-            onClick={() => setView('login')}
+            onClick={() => user ? setView('beranda') : setView('login')}
           >
             videobelajar
           </span>
@@ -54,16 +54,20 @@ const Header = ({ setView, onSearch }) => {
             {/* Kategori Dropdown */}
             <div 
               className="me-4 position-relative" 
-              onMouseEnter={() => setShowCategory(true)}
-              onMouseLeave={() => setShowCategory(false)}
             >
-              <span className="small fw-bold text-secondary" style={{ cursor: 'pointer' }}>Kategori ▾</span>
+              <span 
+                className="small fw-bold text-secondary" 
+                style={{ cursor: 'pointer' }}
+                onClick={() => setShowCategory(!showCategory)}
+              >
+                Kategori ▾
+              </span>
               {showCategory && (
                 <div className="position-absolute bg-white shadow-lg rounded-3 p-2 mt-2 border" style={{ top: '100%', left: '-20px', width: '180px', zIndex: 1000 }}>
-                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}}>Pemasaran</div>
-                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}}>Desain</div>
-                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}}>Pengembangan Diri</div>
-                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}}>Bisnis</div>
+                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}} onClick={() => setShowCategory(false)}>Pemasaran</div>
+                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}} onClick={() => setShowCategory(false)}>Desain</div>
+                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}} onClick={() => setShowCategory(false)}>Pengembangan Diri</div>
+                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}} onClick={() => setShowCategory(false)}>Bisnis</div>
                 </div>
               )}
             </div>
@@ -71,8 +75,6 @@ const Header = ({ setView, onSearch }) => {
             {/* Profile Dropdown */}
             <div 
               className="position-relative"
-              onMouseEnter={() => setShowProfile(true)}
-              onMouseLeave={() => setShowProfile(false)}
             >
               <img 
                 src={`https://ui-avatars.com/api/?name=${user ? user.email : 'Guest'}&background=ffcc00`} 
@@ -80,19 +82,20 @@ const Header = ({ setView, onSearch }) => {
                 width="40" 
                 alt="Profile" 
                 style={{ cursor: 'pointer', border: '2px solid white' }}
+                onClick={() => setShowProfile(!showProfile)}
               />
               {showProfile && (
                 <div className="position-absolute bg-white shadow-lg rounded-3 p-2 mt-2 border" style={{ top: '100%', right: '0', width: '160px', zIndex: 1000 }}>
                   <div className="p-2 dropdown-item rounded fw-bold border-bottom mb-1 text-truncate">
                     {user ? user.email : 'Tamu'}
                   </div>
-                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}} onClick={() => user ? setView('profile') : setView('login')}>
+                  <div className="p-2 dropdown-item rounded" style={{cursor: 'pointer'}} onClick={() => { user ? setView('profile') : setView('login'); setShowProfile(false); }}>
                     Profil Saya
                   </div>
                   {user ? (
-                    <div className="p-2 dropdown-item rounded text-danger" style={{cursor: 'pointer'}} onClick={handleLogout}>Keluar</div>
+                    <div className="p-2 dropdown-item rounded text-danger" style={{cursor: 'pointer'}} onClick={() => { handleLogout(); setShowProfile(false); }}>Keluar</div>
                   ) : (
-                    <div className="p-2 dropdown-item rounded text-success" style={{cursor: 'pointer'}} onClick={() => setView('login')}>Masuk</div>
+                    <div className="p-2 dropdown-item rounded text-success" style={{cursor: 'pointer'}} onClick={() => { setView('login'); setShowProfile(false); }}>Masuk</div>
                   )}
                 </div>
               )}

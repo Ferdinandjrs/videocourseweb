@@ -31,3 +31,6 @@ Thumbs.db
 # Optional
 *.pid
 *.seed
+
+uploads/
+uploads/*.jpg

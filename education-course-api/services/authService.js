@@ -27,9 +27,32 @@ const verifyUserEmail = async (userId) => {
   return result.affectedRows;
 };
 
+const getUserById = async (id) => {
+  const [rows] = await db.query('SELECT id, name as fullname, username, email, phone, avatar FROM users WHERE id = ?', [id]);
+  return rows[0];
+};
+
+const updateUserProfile = async (id, data) => {
+  const { fullname, phone, avatar } = data;
+  let query = 'UPDATE users SET name = ?, phone = ?';
+  const params = [fullname, phone];
+
+  if (avatar !== undefined) {
+    query += ', avatar = ?';
+    params.push(avatar);
+  }
+  query += ' WHERE id = ?';
+  params.push(id);
+
+  const [result] = await db.query(query, params);
+  return result.affectedRows;
+};
+
 module.exports = {
   getUserByEmail,
   getUserByToken,
   createUser,
-  verifyUserEmail
+  verifyUserEmail,
+  getUserById,
+  updateUserProfile
 };

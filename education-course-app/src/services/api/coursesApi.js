@@ -1,6 +1,6 @@
 import axiosInstance from './axiosInstance';
 
-const ENDPOINT = '/courses';
+const ENDPOINT = '/course';
 
 export const getCourses = async () => {
   try {

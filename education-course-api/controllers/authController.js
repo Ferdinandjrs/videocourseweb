@@ -77,8 +77,30 @@ const verifyEmail = async (req, res) => {
   }
 };
 
+const getProfile = async (req, res) => {
+  try {
+    const user = await authService.getUserById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const { fullname, phone, avatar } = req.body;
+    await authService.updateUserProfile(req.user.id, { fullname, phone, avatar });
+    res.json({ message: 'Profile updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   register,
   login,
-  verifyEmail
+  verifyEmail,
+  getProfile,
+  updateProfile
 };
